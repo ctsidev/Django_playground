@@ -5,6 +5,7 @@
 {% block content %}
   <form method="post" novalidate>
     {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Default Selection</button>
     <div class="form-row">
       <div class="form-group col-md-8 mb-0">
         {{ form.study_id|as_crispy_field }}
@@ -12,33 +13,53 @@
       <div class="form-group col-md-8 mb-0">
         {{ form.encounter_id|as_crispy_field }}
       </div>
-      <div class="form-group col-md-8 mb-0">
+      <div class="form-group col-md-5 mb-0">
         {{ form.epic_encounter_type|as_crispy_field }}
       </div>
+      <div class="form-group col-md-6 mb-0">
+        {{ form.epic_encounter_type_criteria|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-5 mb-0">
+        {{ form.encounter_date|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-6 mb-0">
+        {{ form.encounter_date_criteria|as_crispy_field }}
+      </div>
+
+
       <div class="form-group col-md-8 mb-0">
-        {{ form.encounter_age|as_crispy_field }}
+        {{ form.admit_date_time|as_crispy_field }}
       </div>
       <div class="form-group col-md-8 mb-0">
-        {{ form.admit_date|as_crispy_field }}
-      </div>
-      <div class="form-group col-md-8 mb-0">
-        {{ form.discharge_date|as_crispy_field }}
+        {{ form.discharge_date_time|as_crispy_field }}
       </div>
       <div class="form-group col-md-8 mb-0">
         {{ form.ed_disposition|as_crispy_field }}
       </div>
-      <div class="form-group col-md-8 mb-0">
+      <div class="form-group col-md-5 mb-0">
         {{ form.pcornet_visit_type|as_crispy_field }}
       </div>
+      <div class="form-group col-md-6 mb-0">
+        {{ form.pcornet_visit_type_criteria|as_crispy_field }}
+      </div>
+
       <div class="form-group col-md-8 mb-0">
         {{ form.visit_provider_id|as_crispy_field }}
       </div>
-      <div class="form-group col-md-8 mb-0">
+      <div class="form-group col-md-5 mb-0">
         {{ form.epic_department_name|as_crispy_field }}
       </div>
-      <div class="form-group col-md-8 mb-0">
+      <div class="form-group col-md-6 mb-0">
+        {{ form.epic_department_name_criteria|as_crispy_field }}
+      </div>
+
+      <div class="form-group col-md-5 mb-0">
         {{ form.department_specialty|as_crispy_field }}
       </div>
+            <div class="form-group col-md-6 mb-0">
+        {{ form.department_specialty_criteria|as_crispy_field }}
+      </div>
+      
       <div class="form-group col-md-8 mb-0">
         {{ form.location|as_crispy_field }}
       </div>

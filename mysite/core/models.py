@@ -31,7 +31,7 @@ REQUEST_TYPE_CHOICES = (
 class Project(models.Model):
     title = models.CharField(max_length=200)
     irb = models.CharField(max_length=20)
-    
+    irb_approved = models.BooleanField()
     description = models.CharField(max_length=200) 
     investigator = models.CharField(max_length=100)
     investigator_phone = models.CharField(max_length=100)
@@ -40,6 +40,7 @@ class Project(models.Model):
     requestor_phone = models.CharField(max_length=100)
     requestor_email = models.EmailField(max_length=100)
     chart_review = models.BooleanField()
+    recruitment = models.BooleanField()
     request_type = models.CharField(max_length=50, choices=REQUEST_TYPE_CHOICES, default='Identified Dataset')
     date_deadline = models.DateField(default=date.today)
     date_added = models.DateTimeField(default=timezone.now)
@@ -56,20 +57,27 @@ class Project(models.Model):
 class Encounter(models.Model):
     study_id = models.BooleanField(default = True)    
     encounter_id = models.BooleanField(default = True)
+
     epic_encounter_type = models.BooleanField(default = True)
+    encounter_date= models.BooleanField()
     encounter_age = models.BooleanField()
-    admit_date = models.BooleanField()
-    discharge_date = models.BooleanField()
+    
+    admit_date_time = models.BooleanField()
+    discharge_date_time = models.BooleanField()
+      
     hospital_discharge_disposition = models.BooleanField()
     ed_disposition = models.BooleanField()
+    
     pcornet_visit_type = models.BooleanField(default = True)
     visit_provider_id = models.BooleanField()    
+    
     epic_department_name = models.BooleanField()    
     department_specialty = models.BooleanField()    
+    length_of_stay= models.BooleanField()
     location = models.BooleanField()  
 
     epic_encounter_type_criteria = models.CharField(max_length=300)
-    encounter_age_criteria = models.CharField(max_length=300)
+    encounter_date_criteria = models.CharField(max_length=300)
     pcornet_visit_type_criteria = models.CharField(max_length=300)
     epic_department_name_criteria = models.CharField(max_length=300)
     department_specialty_criteria = models.CharField(max_length=300)

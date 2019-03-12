@@ -17,6 +17,7 @@ REQUEST_TYPE_CHOICES = (
 class ProjectForm(forms.Form):
     title = forms.CharField()
     irb = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'placeholder': '##-######'}))
+    irb_approved = forms.BooleanField(required=False)
     description = forms.CharField(max_length=200) 
     investigator = forms.CharField(max_length=100)
     investigator_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '###-###-####'}))
@@ -32,6 +33,7 @@ class ProjectForm(forms.Form):
     # city = forms.CharField()
     request_type = forms.ChoiceField(choices=REQUEST_TYPE_CHOICES)
     chart_review = forms.BooleanField(required=False)
+    recruitment = forms.BooleanField(required=False)
 
     class Meta:
         model = Project
@@ -43,24 +45,30 @@ class ProjectForm(forms.Form):
 class EncounterForm(forms.Form):
     study_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
     encounter_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
-    epic_encounter_type = forms.BooleanField(initial=False, help_text='Age at the time of the data extraction. (draft)')        
+    epic_encounter_type = forms.BooleanField(initial=True, help_text='The encounter type represented in Care Connect. E.g. "Office Visit"')        
+    encounter_date = forms.BooleanField(initial = False, help_text = 'Date of the patients first encounter based on the investigators criteria')
     encounter_age = forms.BooleanField(initial=False)
-    admit_date = forms.BooleanField(initial=False, help_text='Race calculated conforming to PSCANNER data model. (draft)')            
-    discharge_date = forms.BooleanField(initial=False, help_text='Ethnicity calculated conforming to PSCANNER data model. (draft)') 
-    hospital_discharge_disposition = forms.BooleanField(initial=False, help_text='Vital status is not known deceased or deceased status in EHR. Note only in-hospital death is recorded, for the most part.')    
-    ed_disposition = forms.BooleanField(initial=False, help_text='ADI calculated by the University of Wisconsin. (draft)')   
-    pcornet_visit_type = forms.BooleanField(initial=False)    
+    
+    admit_date_time = forms.BooleanField(initial=False, help_text='Start day for multi-day encounters, without time of day')            
+    discharge_date_time = forms.BooleanField(initial=False, help_text='End day for multi-day encounters, without time of day') 
+
+    hospital_discharge_disposition = forms.BooleanField(initial=False, help_text='The disposition of the patient when discharged from the hospital, only applies to multi-day hospital encounters.')    
+    ed_disposition = forms.BooleanField(initial=False, help_text='The disposition of the patient when discharged from the ED, only applies to patients who were in ED')   
+    
+    pcornet_visit_type = forms.BooleanField(initial=True, help_text = 'Standardized visit types defined by PCORnet, including "Ambulatory Visit", "Inpatient", etc.')    
     visit_provider_id = forms.BooleanField(initial=False)    
     epic_department_name = forms.BooleanField(initial=False)    
-    department_specialty = forms.BooleanField(initial=False)    
+    department_specialty = forms.BooleanField(initial=False, help_text = 'The designated medical specialty of the department where the encounter took place')    
+    length_of_stay = forms.BooleanField(initial = False, help_text = 'Calculated days from admit to discharge')
     location = forms.BooleanField(initial=False)    
     
-    # epic_encounter_type_criteria
-    # encounter_age_criteria
-    # pcornet_visit_type_criteria
-    # epic_department_name_criteria
-    # department_specialty_criteria
-    # location_criteria
+    epic_encounter_type_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'The encounter type represented in Care Connect. E.g. "Office Visit'}))
+
+    encounter_date_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': '2013 to present time'}))
+    pcornet_visit_type_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'Standardized visit types defined by PCORnet. E.g. "Ambulatory Visit"'}))
+    epic_department_name_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'ICU'}))
+    department_specialty_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'Urology'}))
+    location_criteria = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'Ronald Reagan'}))
 
 class DemographicForm(forms.Form):
     study_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
@@ -81,7 +89,8 @@ class ProjectFieldForm(ProjectForm):
         self.helper.layout = Layout(
             Row(
                 Column('title', css_class='form-group col-md-6 mb-0'),
-                Column('irb', css_class='form-group col-md-6 mb-0'),
+                Column('irb', css_class='form-group col-md-3 mb-0'),
+                Column(CustomCheckbox('irb_approved'), css_class='form-group col-md-2 mb-0'),
                 css_class='form-row'
             ),
 
@@ -104,6 +113,7 @@ class ProjectFieldForm(ProjectForm):
             Row(
                 Column('request_type', css_class='form-group col-md-4 mb-0'),
                 Column(CustomCheckbox('chart_review'), css_class='form-group col-md-2 mb-0'),
+                Column(CustomCheckbox('recruitment'), css_class='form-group col-md-4 mb-0'),
                 Column('deadline_date', css_class='form-group col-md-2 mb-0'),
                 # Column('zip_code', css_class='form-group col-md-2 mb-0'),
                 css_class='form-row'
@@ -180,22 +190,26 @@ class EncounterFieldForm(EncounterForm):
                 ,css_class='form-row'),
             Row(
                 
-                Column(CustomCheckbox('epic_encounter_type'), css_class='form-group col-md-1 mb-0')
-                # Column('sex_description', css_class='form-group col-md-4 mb-0')
+                Column(CustomCheckbox('epic_encounter_type'), css_class='form-group col-md-1 mb-0'),
+                Column('epic_encounter_type_criteria', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
+                Column(CustomCheckbox('encounter_date'), css_class='form-group col-md-1 mb-0'),
+                Column('encounter_date_criteria', css_class='form-group col-md-4 mb-0')
+                ,css_class='form-row'),
+             Row(
                 Column(CustomCheckbox('encounter_age'), css_class='form-group col-md-1 mb-0')
                 # Column('race_description', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             
             Row(
                 
-                Column(CustomCheckbox('admit_date'), css_class='form-group col-md-1 mb-0')
+                Column(CustomCheckbox('admit_date_time'), css_class='form-group col-md-1 mb-0')
                 # Column('ethnicity_description', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
                 
-                Column(CustomCheckbox('discharge_date'), css_class='form-group col-md-1 mb-0')
+                Column(CustomCheckbox('discharge_date_time'), css_class='form-group col-md-1 mb-0')
                 # Column('vital_status_description', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
@@ -205,8 +219,8 @@ class EncounterFieldForm(EncounterForm):
                 ,css_class='form-row'),
             Row(
                 
-                Column(CustomCheckbox('pcornet_visit_type'), css_class='form-group col-md-8 mb-0')
-                # Column('current_pcp_id_description', css_class='form-group col-md-4 mb-0')
+                Column(CustomCheckbox('pcornet_visit_type'), css_class='form-group col-md-8 mb-0'),
+                Column('pcornet_visit_type_criteria', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
                 
@@ -215,13 +229,13 @@ class EncounterFieldForm(EncounterForm):
                 ,css_class='form-row'),
             Row(
                 
-                Column(CustomCheckbox('epic_department_name'), css_class='form-group col-md-8 mb-0')
-                # Column('last_visit_encounter_year_description', css_class='form-group col-md-4 mb-0')
+                Column(CustomCheckbox('epic_department_name'), css_class='form-group col-md-8 mb-0'),
+                Column('epic_department_name_criteria', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
                 
-                Column(CustomCheckbox('department_specialty'), css_class='form-group col-md-8 mb-0')
-                # Column('last_visit_encounter_year_description', css_class='form-group col-md-4 mb-0')
+                Column(CustomCheckbox('department_specialty'), css_class='form-group col-md-8 mb-0'),
+                Column('department_specialty_criteria', css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
                 
