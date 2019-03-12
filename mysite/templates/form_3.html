@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
+        {{ form.title|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-2 mb-0">
+        {{ form.irb|as_crispy_field }}
+      </div>
+    </div>\
+    {{ form.description|as_crispy_field }}
+    {{ form.investigator|as_crispy_field }}
+    <div class="form-row">
+      <div class="form-group col-md-4 mb-0">
+        {{ form.investigator_phone|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-4 mb-0">
+        {{ form.investigator_email|as_crispy_field }}
+      </div>
+
+      {{ form.requestor|as_crispy_field }}
+    <div class="form-row">
+      <div class="form-group col-md-4 mb-0">
+        {{ form.requestor_phone|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-4 mb-0">
+        {{ form.requestor_email|as_crispy_field }}
+      </div>
+
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-4 mb-0">
+        {{ form.request_type|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-2 mb-0">
+        {{ form.deadline_date|as_crispy_field }}
+      </div>
+      <div class="form-group col-md-2 mb-0">
+        {{ form.chart_review|as_crispy_field }}
+      </div>
+    </div>
+
+<!--     {{ form.request_type|as_crispy_field }}
+    {{ form.deadline_date|as_crispy_field }}
+    {{ form.chart_review|as_crispy_field }} -->
+    
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}
