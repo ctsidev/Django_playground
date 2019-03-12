@@ -1,4 +1,4 @@
-from django import forms
+# from django import forms
 from django.contrib.auth.models import User
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
@@ -23,15 +23,15 @@ class CrispyAddressFormView(FormView):
 	template_name = 'crispy_form.html'
 
 
-class CustomFieldFormView(forms.ModelForm,CreateView):
+class CustomFieldFormView(FormView):
 	model = Project 
 	form_class = CustomFieldForm
 	success_url = reverse_lazy('success')
 	template_name = 'crispy_form.html'
 
-	def form_valid(self, form):
-		# form.instance.investigator = self.request.user
-		return super().form_valid(form)
+	# def form_valid(self, form):
+	# 	# form.instance.investigator = self.request.user
+	# 	return super().form_valid(form)
 
 
 class DemographicsFormView(FormView):
