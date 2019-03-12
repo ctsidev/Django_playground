@@ -52,3 +52,31 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'pk': self.pk})
+
+class Encounter(models.Model):
+    study_id = models.BooleanField(default = True)    
+    encounter_id = models.BooleanField(default = True)
+    epic_encounter_type = models.BooleanField(default = True)
+    encounter_age = models.BooleanField()
+    admit_date = models.BooleanField()
+    discharge_date = models.BooleanField()
+    hospital_discharge_disposition = models.BooleanField()
+    ed_disposition = models.BooleanField()
+    pcornet_visit_type = models.BooleanField(default = True)
+    visit_provider_id = models.BooleanField()    
+    epic_department_name = models.BooleanField()    
+    department_specialty = models.BooleanField()    
+    location = models.BooleanField()  
+
+    epic_encounter_type_criteria = models.CharField(max_length=300)
+    encounter_age_criteria = models.CharField(max_length=300)
+    pcornet_visit_type_criteria = models.CharField(max_length=300)
+    epic_department_name_criteria = models.CharField(max_length=300)
+    department_specialty_criteria = models.CharField(max_length=300)
+    location_criteria = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.description
+
+    def get_absolute_url(self):
+        return reverse('project-detail', kwargs={'pk': self.pk})

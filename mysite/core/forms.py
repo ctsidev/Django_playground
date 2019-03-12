@@ -14,7 +14,7 @@ REQUEST_TYPE_CHOICES = (
         ('Identified Dataset', 'Identified Dataset'),
     )
 
-class AddressForm(forms.Form):
+class ProjectForm(forms.Form):
     title = forms.CharField()
     irb = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'placeholder': '##-######'}))
     description = forms.CharField(max_length=200) 
@@ -40,7 +40,7 @@ class AddressForm(forms.Form):
     'request_type', 
     'date_deadline',
     ]
-class EncountersForm(forms.Form):
+class EncounterForm(forms.Form):
     study_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
     encounter_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
     epic_encounter_type = forms.BooleanField(initial=False, help_text='Age at the time of the data extraction. (draft)')        
@@ -54,18 +54,15 @@ class EncountersForm(forms.Form):
     epic_department_name = forms.BooleanField(initial=False)    
     department_specialty = forms.BooleanField(initial=False)    
     location = forms.BooleanField(initial=False)    
-    # study_id_description = forms.CharField(max_length=100)   
-    # age_description = forms.CharField(max_length=100)   
-    # sex_description = forms.CharField(max_length=100)   
-    # race_description = forms.CharField(max_length=100)   
-    # ethnicity_description = forms.CharField(max_length=100)   
-    # vital_status_description = forms.CharField(max_length=100)   
-    # neighborhood_adi_category_description = forms.CharField(max_length=100)   
-    # current_pcp_id_description = forms.CharField(max_length=100)   
-    # last_visit_encounter_year_description = forms.CharField(max_length=100)   
+    
+    # epic_encounter_type_criteria
+    # encounter_age_criteria
+    # pcornet_visit_type_criteria
+    # epic_department_name_criteria
+    # department_specialty_criteria
+    # location_criteria
 
-
-class DemographicsForm(forms.Form):
+class DemographicForm(forms.Form):
     study_id = forms.BooleanField(initial=True, help_text='Study ID is a study-specific one-way hash of the unique research identifier assigned to every UCLA patient. The Study ID is used implicitly in each table below to represent the patient identity.')    
     age = forms.BooleanField(initial=False, help_text='Age at the time of the data extraction. (draft)')        
     sex = forms.BooleanField(initial=False)
@@ -77,47 +74,7 @@ class DemographicsForm(forms.Form):
     last_visit_encounter_year = forms.BooleanField(initial=False)    
 
 
-
-class CrispyAddressForm(AddressForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column('title', css_class='form-group col-md-8 mb-0'),
-                Column('irb', css_class='form-group col-md-2 mb-0'),
-                css_class='form-row'
-            ),
-
-            'description',
-
-            'investigator',
-            Row(
-                Column('investigator_phone', css_class='form-group col-md-4 mb-0'),
-                Column('investigator_email', css_class='form-group col-md-4 mb-0'),
-                # Column('zip_code', css_class='form-group col-md-2 mb-0'),
-                css_class='form-row'
-            ),
-            'requestor',
-            Row(
-                Column('requestor_phone', css_class='form-group col-md-4 mb-0'),
-                Column('requestor_email', css_class='form-group col-md-4 mb-0'),
-                # Column('zip_code', css_class='form-group col-md-2 mb-0'),
-                css_class='form-row'
-            ),
-            Row(
-                Column('request_type', css_class='form-group col-md-4 mb-0'),
-                Column('chart_review', css_class='form-group col-md-2 mb-0'),
-                Column('deadline_date', css_class='form-group col-md-2 mb-0'),
-                # Column('zip_code', css_class='form-group col-md-2 mb-0'),
-                css_class='form-row'
-            ),
-            Submit('submit', 'Save')
-        )
-
-
-
-class CustomFieldForm(AddressForm):
+class ProjectFieldForm(ProjectForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -153,7 +110,7 @@ class CustomFieldForm(AddressForm):
             ),
             Submit('submit', 'Save')
         )
-class DemographicsElementsForm(DemographicsForm):
+class DemographicFieldForm(DemographicForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -206,7 +163,7 @@ class DemographicsElementsForm(DemographicsForm):
             Submit('submit', 'Save')
         )
 
-class EncountersElementsForm(EncountersForm):
+class EncounterFieldForm(EncounterForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()

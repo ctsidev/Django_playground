@@ -9,23 +9,24 @@ from django.views.generic import (
 	UpdateView,
 	DeleteView
 	)
-from .forms import AddressForm, CrispyAddressForm, CustomFieldForm, DemographicsElementsForm, EncountersElementsForm
+from .forms import ProjectFieldForm, DemographicFieldForm, EncounterFieldForm
+# AddressForm, CrispyAddressForm, CustomFieldForm, DemographicsElementsForm, EncountersElementsForm
 from .models import Project
 
-class AddressFormView(FormView):
-	form_class = AddressForm
-	success_url = reverse_lazy('success')
+# class AddressFormView(FormView):
+# 	form_class = AddressForm
+# 	success_url = reverse_lazy('success')
 
 
-class CrispyAddressFormView(FormView):
-	form_class = CrispyAddressForm
-	success_url = reverse_lazy('success')
-	template_name = 'crispy_form.html'
+# class CrispyAddressFormView(FormView):
+# 	form_class = CrispyAddressForm
+# 	success_url = reverse_lazy('success')
+# 	template_name = 'crispy_form.html'
 
 
-class CustomFieldFormView(FormView):
+class ProjectFormView(FormView):
 	model = Project 
-	form_class = CustomFieldForm
+	form_class = ProjectFieldForm
 	success_url = reverse_lazy('success')
 	template_name = 'crispy_form.html'
 
@@ -34,13 +35,13 @@ class CustomFieldFormView(FormView):
 	# 	return super().form_valid(form)
 
 
-class DemographicsFormView(FormView):
-	form_class = DemographicsElementsForm
+class DemographicFormView(FormView):
+	form_class = DemographicFieldForm
 	success_url = reverse_lazy('success')
 	template_name = 'crispy_form.html'
 
-class EncountersFormView(FormView):
-	form_class = EncountersElementsForm
+class EncounterFormView(FormView):
+	form_class = EncounterFieldForm
 	success_url = reverse_lazy('success')
 	template_name = 'crispy_form.html'
 

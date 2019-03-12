@@ -15,64 +15,64 @@
   <div class="container">
     <ul class="nav nav-tabs my-4">
       <li class="nav-item">
-        <a  class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Project Information</a>
+        <a  class="nav-link{% if request.path == '/project/1/' %} active{% endif %}" href="{% url 'project' %}">Project Information</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/3/' %} active{% endif %}" href="{% url 'form_3' %}">Cohort</a>
+        <a class="nav-link{% if request.path == '/project/3/' %} active{% endif %}" href="{% url 'project' %}">Cohort</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/demographics/1/' %} active{% endif %}" href="{% url 'demographics' %}">Demographics</a>
+        <a class="nav-link{% if request.path == '/demographic/1/' %} active{% endif %}" href="{% url 'demographic' %}">Demographics</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/2/' %} active{% endif %}" href="{% url 'form_2' %}">Identifiers</a>
+        <a class="nav-link{% if request.path == '/project/2/' %} active{% endif %}" href="{% url 'project' %}">Identifiers</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/encounters/1/' %} active{% endif %}" href="{% url 'encounters' %}">Encounters</a>
+        <a class="nav-link{% if request.path == '/encounter/1/' %} active{% endif %}" href="{% url 'encounter' %}">Encounters</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">ADT</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">ADT</a>
+      </li>
+      <li class="nav-item"> 
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Appointments</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Appointments</a>
+        <a class="nav-link{% if request.path == '/project/4/' %} active{% endif %}" href="{% url 'project' %}">Labs</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/4/' %} active{% endif %}" href="{% url 'form_4' %}">Labs</a>
+        <a class="nav-link{% if request.path == '/project/4/' %} active{% endif %}" href="{% url 'project' %}">Provider</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/4/' %} active{% endif %}" href="{% url 'form_4' %}">Provider</a>
+        <a class="nav-link{% if request.path == '/project/4/' %} active{% endif %}" href="{% url 'project' %}">Problem Lists</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/4/' %} active{% endif %}" href="{% url 'form_4' %}">Problem Lists</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Diagnoses</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Diagnoses</a>
       </li>
        <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Procedures</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Procedures</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Medications</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Medications</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Vitals</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Vitals</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Social History</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Social History</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Family History</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Family History</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/4/' %} active{% endif %}" href="{% url 'form_4' %}">Provider Notes</a>
+        <a class="nav-link{% if request.path == '/project/4/' %} active{% endif %}" href="{% url 'project' %}">Provider Notes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Pathology</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Pathology</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Microbiology</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Microbiology</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if request.path == '/form/5/' %} active{% endif %}" href="{% url 'form_5' %}">Allergies</a>
+        <a class="nav-link{% if request.path == '/project/5/' %} active{% endif %}" href="{% url 'project' %}">Allergies</a>
       </li>
     </ul>
   </div>
