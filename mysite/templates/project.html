@@ -17,6 +17,7 @@
       </div>
     </div>\
     {{ form.description|as_crispy_field }}
+    {{ form.research_topic|as_crispy_field }}
     {{ form.investigator|as_crispy_field }}
     <div class="form-row">
       <div class="form-group col-md-4 mb-0">
@@ -50,7 +51,11 @@
       <div class="form-group col-md-2 mb-0">
         {{ form.chart_review|as_crispy_field }}
       </div>
+      
+        {{ form.intended_used|as_crispy_field }}
+      
     </div>
+
 
 <!--     {{ form.request_type|as_crispy_field }}
     {{ form.deadline_date|as_crispy_field }}

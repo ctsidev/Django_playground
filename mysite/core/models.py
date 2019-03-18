@@ -28,8 +28,17 @@ REQUEST_TYPE_CHOICES = (
         ('Identified Dataset', 'Identified Dataset'),
     )
 
+INTENDED_USE_CHOICES = (
+        ('Grant Proposal', 'Grant Proposal'),
+        ('Poster', 'Poster'),
+        ('Manuscript', 'Manuscript'),
+        ('Presentation', 'Presentation'),
+        ('Other ', 'Other '),
+    )
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
+    research_topic = models.CharField(max_length=200)
     irb = models.CharField(max_length=20)
     irb_approved = models.BooleanField()
     description = models.CharField(max_length=200) 
@@ -43,6 +52,7 @@ class Project(models.Model):
     recruitment = models.BooleanField()
     request_type = models.CharField(max_length=50, choices=REQUEST_TYPE_CHOICES, default='Identified Dataset')
     date_deadline = models.DateField(default=date.today)
+    intended_used = models.CharField(max_length=50, choices=INTENDED_USE_CHOICES, default='Identified Dataset')
     date_added = models.DateTimeField(default=timezone.now)
     added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     # def is_upperclass(self):

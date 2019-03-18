@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import RadioSelect
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, Row, Column, Field
 from datetime import date
@@ -6,34 +7,63 @@ from datetime import date
 from flatpickr import DatePickerInput
 
 from .models import Project
+
+from django.utils.safestring import mark_safe
+# class HorizRadioRenderer(forms.RadioSelect.renderer):
+#     """ this overrides widget method to put radio buttons horizontally
+#         instead of vertically.
+#     """
+#     def render(self):
+#             """Outputs radios"""
+#             return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
 REQUEST_TYPE_CHOICES = (
-        ('', 'Choose...'),
         ('Specialized Counts', 'Specialized Counts'),
-        ('Limited Data Set', 'Limited Data Set'),
+        ('Limited Dataset', 'Limited Dataset'),
         ('De-Identified Dataset', 'De-Identified Dataset'),
         ('Identified Dataset', 'Identified Dataset'),
     )
+INTENDED_USE_CHOICES = (
+        ('Grant Proposal', 'Grant Proposal'),
+        ('Poster', 'Poster'),
+        ('Manuscript', 'Manuscript'),
+        ('Presentation', 'Presentation'),
+        ('Other', 'Other'),
+    )
+
+class CustomCheckbox(Field):
+    template = 'custom_checkbox.html'
+
+# class RadioSelect(ChoiceWidget):
+#     input_type = 'radio'
+#     template_name = 'django/forms/widgets/radio.html'
+#     option_template_name = 'django/forms/widgets/radio_option.html'
+
 
 class ProjectForm(forms.Form):
-    title = forms.CharField()
-    irb = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'placeholder': '##-######'}))
-    irb_approved = forms.BooleanField(required=False)
-    description = forms.CharField(max_length=200) 
-    investigator = forms.CharField(max_length=100)
-    investigator_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '###-###-####'}))
-    investigator_email = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    requestor = forms.CharField(max_length=100)
-    requestor_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': '###-###-####'}))
-    requestor_email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    deadline_date = forms.DateField(widget=DatePickerInput())
-    # email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    # password = forms.CharField(widget=forms.PasswordInput())
-    # address_1 = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': '1234 Main St'}))
-    # address_2 = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apartment, studio, or floor'}))
-    # city = forms.CharField()
-    request_type = forms.ChoiceField(choices=REQUEST_TYPE_CHOICES)
-    chart_review = forms.BooleanField(required=False)
-    recruitment = forms.BooleanField(required=False)
+    title = forms.CharField(label = 'Working or Lay Title')
+    research_topic = forms.CharField()
+    irb = forms.CharField(label = 'IRB# (or PRE#)', max_length=25, widget=forms.TextInput(attrs={'placeholder': '##-######'}))
+    irb_approved = forms.BooleanField(label = 'IRB approved', required=False)
+    description = forms.CharField(label = 'Please provide the research question for this project.', max_length=200) 
+    investigator = forms.CharField(label = 'Principal Investigator Name', max_length=100)
+    investigator_phone = forms.CharField(label = 'Principal Investigator Phone', max_length=100, widget=forms.TextInput(attrs={'placeholder': '###-###-####'}))
+    investigator_email = forms.CharField(label = 'Principal Investigator Email', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    requestor = forms.CharField(label = 'Study Contact Name', max_length=100)
+    requestor_phone = forms.CharField(label = 'Study Contact Phone', max_length=100, widget=forms.TextInput(attrs={'placeholder': '###-###-####'}))
+    requestor_email = forms.EmailField(label = 'Study Contact Email', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    deadline_date = forms.DateField(label = 'Deadline for Obtaining Dataset', 
+                                        widget=DatePickerInput())
+    request_type = forms.ChoiceField(label = 'Request Type', widget=forms.RadioSelect(),
+                                    choices=REQUEST_TYPE_CHOICES)
+    intended_used = forms.ChoiceField(label = 'Intended Use of Counts or Dataset', 
+                                    widget=forms.RadioSelect(),
+                                    choices=INTENDED_USE_CHOICES
+                                    )
+    chart_review = forms.BooleanField(label = 'Chart Review', required=False)
+    recruitment = forms.BooleanField(label = 'Recruitment Study', required=False)
+
 
     class Meta:
         model = Project
@@ -95,7 +125,7 @@ class ProjectFieldForm(ProjectForm):
             ),
 
             'description',
-
+            'research_topic',
             'investigator',
             Row(
                 Column('investigator_phone', css_class='form-group col-md-6 mb-0'),
@@ -110,6 +140,7 @@ class ProjectFieldForm(ProjectForm):
                 # Column('zip_code', css_class='form-group col-md-2 mb-0'),
                 css_class='form-row'
             ),
+            'intended_used',
             Row(
                 Column('request_type', css_class='form-group col-md-4 mb-0'),
                 Column(CustomCheckbox('chart_review'), css_class='form-group col-md-2 mb-0'),
@@ -118,6 +149,8 @@ class ProjectFieldForm(ProjectForm):
                 # Column('zip_code', css_class='form-group col-md-2 mb-0'),
                 css_class='form-row'
             ),
+
+
             Submit('submit', 'Save')
         )
 class DemographicFieldForm(DemographicForm):
@@ -204,13 +237,8 @@ class EncounterFieldForm(EncounterForm):
             
             Row(
                 
-                Column(CustomCheckbox('admit_date_time'), css_class='form-group col-md-1 mb-0')
-                # Column('ethnicity_description', css_class='form-group col-md-4 mb-0')
-                ,css_class='form-row'),
-            Row(
-                
-                Column(CustomCheckbox('discharge_date_time'), css_class='form-group col-md-1 mb-0')
-                # Column('vital_status_description', css_class='form-group col-md-4 mb-0')
+                Column(CustomCheckbox('admit_date_time'), css_class='form-group col-md-4 mb-0'),
+                Column(CustomCheckbox('discharge_date_time'), css_class='form-group col-md-4 mb-0')
                 ,css_class='form-row'),
             Row(
                 
@@ -244,5 +272,4 @@ class EncounterFieldForm(EncounterForm):
                 ,css_class='form-row'),
             Submit('submit', 'Save')
         )
-class CustomCheckbox(Field):
-    template = 'custom_checkbox.html'
+
